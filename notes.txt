@@ -1,0 +1,61 @@
+// function print_compose(){
+//   document.querySelector('#container').innerHTML=`<div style='position: absolute'>
+//   <h1>TESTS</h1>
+//   <div id="test_div"></div>
+//   <canvas id="myCanvas" width="1000px" height="100px"></canvas>
+//   <div id="canvasBox"></div>
+//   </div>`;
+//   hz_pitch();
+// }
+
+//PRINT HZ
+
+// function hz_pitch() {
+//   console.log('enter');
+//   const audioContext = new window.AudioContext();
+//   const analyser = audioContext.createAnalyser();
+
+//   const constraints = {
+//     'audio': true
+//   }
+//   navigator.mediaDevices.getUserMedia(constraints)
+//   .then(stream => {
+//     console.log('Got MediaStream:', stream);
+//     audioContext.createMediaStreamSource(stream).connect(analyser)
+//   })
+//   .catch(error => {
+//     console.error('Error accessing media devices.', error);
+//   });
+
+//   const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+//   // canvas stuff
+//   var canvasEl2 = document.getElementById("myCanvas");
+//   const canvasContext = canvasEl2.getContext('2d');
+//   canvasContext.fillStyle = 'firebrick';
+
+//   canvasBox=document.querySelector('#canvasBox'); // get div
+
+
+//   record=setInterval(() => {
+//   canvasContext.clearRect(0, 0, canvasEl2.width, canvasEl2.height);
+//   analyser.getByteTimeDomainData(dataArray);
+//   console.log(dataArray);
+
+//   // canvas 2
+//   var canvasEl = document.createElement("CANVAS");
+//   let canvasContext2 = canvasEl.getContext('2d');
+//   canvasContext2.fillStyle = 'firebrick';
+
+//   // canvasEl.append('width', '1000px');
+
+//   dataArray.forEach((item, i) => {
+
+//     canvasContext.fillRect(i, item, 1, 1);
+//     canvasContext2.fillRect(i, item, 1, 1);
+
+//   });
+//   canvasBox.append(canvasEl);
+//   }, 100);
+
+// }

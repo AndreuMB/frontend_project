@@ -1,19 +1,13 @@
 /* Custom default button */
-.btn-secondary,
-.btn-secondary:hover,
-.btn-secondary:focus {
-  color: #333;
-  text-shadow: none; /* Prevent inheritance from `body` */
-}
 
 
 /*
  * Center text
  */
 
-.cover-container {
+/* .cover-container {
   max-width: 42em;
-}
+} */
 
 
 /*
@@ -55,6 +49,3 @@
   text-align: center;
 } */
 
-.card{
-  --bs-bg-opacity: 1 !important;
-}
