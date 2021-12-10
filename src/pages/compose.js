@@ -1,7 +1,7 @@
 export { print_stave };
 import Vex from 'vexflow';
 
-function print_stave_resize(stave, context){
+function print_stave_resize(stave, context,renderer){
     let div = document.querySelector('#stave_container');
   
     console.log(context.svg.children);
@@ -29,7 +29,10 @@ function print_stave_resize(stave, context){
           staveMeasurex = new Vex.Flow.Stave(10, y, 300);
           staveMeasurex.addClef("treble");
         
-          // staveMeasure1.
+          if (staveMeasurex.y>=div.offsetHeight) {
+            console.log("resize div");
+            renderer.resize(div.offsetWidth, div.offsetHeight+100); // width space to print notes
+          }
         }else{
           staveMeasurex = new Vex.Flow.Stave(
             staveMeasurex.width + staveMeasurex.x, // x position
@@ -98,7 +101,7 @@ let VF = Vex.Flow;
 let notesStave=[];
 
 
-var renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+let renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
 
 // Size our SVG:
 renderer.resize(div.offsetWidth, 700); // space to print notes
@@ -116,11 +119,11 @@ let group = "";
 // Resize SVG
 window.addEventListener('resize', function(){
     console.log("renderer " + renderer.getContext().width);
-    console.log("div " + div.offsetWidth);
+    console.log("div width" + div.offsetWidth);
     // Size our SVG:
-    renderer.resize(div.offsetWidth, 700); // space to print notes
+    renderer.resize(div.offsetWidth, 700); // width space to print notes resize(x,y)
     // console.log("group = " + print_stave_resize(notesStave,context));
-    let data = print_stave_resize(notesStave,context);
+    let data = print_stave_resize(notesStave,context,renderer);
     group = data.group;
     staveMeasurex = data.staveMeasurex;
 
@@ -155,13 +158,19 @@ notes.forEach(note => {
     if (notesMeasurex.length>3) {
         // if (time%5==0) { // 5 = static of times per line
         if (staveMeasurex.width + staveMeasurex.x>div.offsetWidth-300) { // change line
-        console.log("enter change line");
-        staveMeasurex.y = staveMeasurex.y + 100;
-        time=0;
-        staveMeasurex = new Vex.Flow.Stave(10, staveMeasurex.y, 300);
-        staveMeasurex.addClef("treble");
-        
-        // staveMeasure1.
+          console.log("enter change line");
+          staveMeasurex.y = staveMeasurex.y + 100;
+          time=0;
+          staveMeasurex = new Vex.Flow.Stave(10, staveMeasurex.y, 300);
+          staveMeasurex.addClef("treble");
+          console.log("heigth div = " + div.offsetHeight);
+          console.log("heigth steave = " + staveMeasurex.y);
+
+          if (staveMeasurex.y>=div.offsetHeight) {
+            console.log("resize div");
+            renderer.resize(div.offsetWidth, div.offsetHeight+100); // width space to print notes
+          }
+
         }else{
         console.log("enter noooooOOO change line");
         staveMeasurex = new Vex.Flow.Stave(
@@ -195,8 +204,8 @@ notes.forEach(note => {
     context.closeGroup();
     console.log(stave);
         
-    })
-    
+  })
+
 });
 
     // Render beams

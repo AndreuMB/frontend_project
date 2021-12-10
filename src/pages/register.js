@@ -13,11 +13,11 @@ function print_register(){
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" name="email">
+                    <input type="email" id="email" class="form-control" name="email">
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" name="password">
+                    <input type="password" id="pswd" class="form-control" name="password">
                 </div>
                 <button type="button" id="submit_register" class="btn btn-primary">Register</button>
             </form>
@@ -28,7 +28,16 @@ function print_register(){
 
 function register(e){
     e.preventDefault(); 
-    let formData = new FormData(document.querySelector('#register'));
+    // let formData = new FormData(document.querySelector('#register'));
+    // formDataJSON = JSON.stringify(Object.fromEntries(formData));
+    // formDataJSON.push({"returnSecureToken":true});
+
+    let email = document.querySelector('#email').value;
+    let pswd = document.querySelector('#pswd').value;
+    let username = document.querySelector('#username').value;
+
+    let dataJSON = {"email":email,"password":pswd,"returnSecureToken":true}
+
 
     let url = "https://daw2022-64f58-default-rtdb.europe-west1.firebasedatabase.app/users/";
 
@@ -37,19 +46,20 @@ function register(e){
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
-        body: JSON.stringify(Object.fromEntries(formData)),
+        body: JSON.stringify(dataJSON),
     }).then((response) => response.json())
     .then((datos) => {
+        console.log(datos);
         if (datos.error) {
             console.log(datos.error.message);
         }else{
             console.log(datos.localId);
         }
         let json={
-            "Name": document.querySelector('#username').value
+            "name": username
         };
         // json.key=
-        fetch(url + datos.localId + ".json", {
+        fetch(url + datos.localId + ".json?auth="+datos.idToken, {
             method: "put",
             headers: { "Content-type": "application/json; charset=UTF-8" },
             body: JSON.stringify(json),

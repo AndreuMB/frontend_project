@@ -1,6 +1,7 @@
 export { print_login };
 
 import { print_welcome } from './welcome';
+import { print_menu } from './menu';
 
 function print_login(){
     document.querySelector('#container').innerHTML=
@@ -9,11 +10,11 @@ function print_login(){
             <form id="login">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" name="email">
+                    <input type="email" id="email" class="form-control" name="email">
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" name="password">
+                    <input type="password" id="pswd" class="form-control" name="password">
                 </div>
                 <span class="text-danger" id="error_login"></span><br>
                 <button type="button" id="submit_login" class="btn btn-primary">Login</button>
@@ -26,27 +27,38 @@ function print_login(){
 
 function login(e){
     e.preventDefault();
-    let formData = new FormData(document.querySelector('#login'));
-    let url = "https://daw2022-64f58-default-rtdb.europe-west1.firebasedatabase.app/users";
+    // let formData = new FormData(document.querySelector('#login'));
+    let url = "https://daw2022-64f58-default-rtdb.europe-west1.firebasedatabase.app/users/";
 
-    fetch(url + ".json")
-    .then((response) => response.json())
-    .then((data) => {
-        console.log(data);
-    });
+    let email = document.querySelector('#email').value;
+    let pswd = document.querySelector('#pswd').value;
+
+    let dataJSON = {"email":email,"password":pswd,"returnSecureToken":true}
 
     fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCFfIeHfupYXw89FUOMeorhfQrndz7iIck',{
         method: "post",
         headers: {"Content-type": "application/json; charset=UTF-8"},
-        body: JSON.stringify(Object.fromEntries(formData)),
+        body: JSON.stringify(dataJSON),
     }).then((response) => {
         if (!response.ok) {
             throw "Username or password incorrect";
         }
         return response.json();
     }).then((datos) => {
-        console.log(datos);
-        print_welcome();
+        fetch(url + datos.localId + ".json?auth="+datos.idToken)
+        .then((response) => response.json())
+        .then((data) => {
+            sessionStorage.setItem('localId', datos.localId);
+            sessionStorage.setItem('idToken', datos.idToken);
+            sessionStorage.setItem('username', data.name);
+
+
+            console.log(data);
+            console.log("username = " + data.name);
+
+            print_menu();
+            print_welcome();
+        });
     }).catch(error => {
         console.log("enter");
         document.querySelector('#error_login').innerHTML=error;
