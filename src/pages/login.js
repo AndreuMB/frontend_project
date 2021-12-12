@@ -2,6 +2,7 @@ export { print_login };
 
 import { print_welcome } from './welcome';
 import { print_menu } from './menu';
+import '../apikey.js'
 
 function print_login(){
     document.querySelector('#container').innerHTML=
@@ -35,7 +36,7 @@ function login(e){
 
     let dataJSON = {"email":email,"password":pswd,"returnSecureToken":true}
 
-    fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCFfIeHfupYXw89FUOMeorhfQrndz7iIck',{
+    fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+key,{
         method: "post",
         headers: {"Content-type": "application/json; charset=UTF-8"},
         body: JSON.stringify(dataJSON),

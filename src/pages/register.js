@@ -41,7 +41,7 @@ function register(e){
 
     let url = "https://daw2022-64f58-default-rtdb.europe-west1.firebasedatabase.app/users/";
 
-    fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCFfIeHfupYXw89FUOMeorhfQrndz7iIck',{
+    fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key='+key,{
         method: "post",
         headers: {
           "Content-type": "application/json; charset=UTF-8",

@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './style.css'
 
 // TESTS
 // import './test.js';
@@ -13,7 +14,6 @@ import { print_menu } from './pages/menu.js';
 
 
 document.addEventListener('DOMContentLoaded', function(){
-
   print_menu();
   // print_welcome();
   // document.querySelector('#welcome_link').addEventListener('click', print_welcome);
