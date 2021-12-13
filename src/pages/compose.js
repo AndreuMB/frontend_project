@@ -1,4 +1,8 @@
 export { print_stave };
+import {
+  fromEvent,
+  throttleTime
+} from "rxjs";
 import Vex from 'vexflow';
 
 function print_stave(){
@@ -7,11 +11,10 @@ function print_stave(){
   let container=document.querySelector('#container');
   container.innerHTML='';
 
-  if (sessionStorage.getItem("sheet")!="") {
+  if ((sessionStorage.getItem("sheet") != "") && (sessionStorage.getItem("sheet") != null)) {
     let url = "https://daw2022-64f58-default-rtdb.europe-west1.firebasedatabase.app/users/";
-    fetch(url + sessionStorage.getItem("localId") + "/sheets/"+sessionStorage.getItem("sheet")+".json?auth="+sessionStorage.getItem("idToken"),{
-        method: "get"
-    })
+    console.log(url + sessionStorage.getItem("localId") + "/sheets/"+sessionStorage.getItem("sheet")+".json?auth="+sessionStorage.getItem("idToken"));
+    fetch(url + sessionStorage.getItem("localId") + "/sheets/"+sessionStorage.getItem("sheet")+".json?auth="+sessionStorage.getItem("idToken"))
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
@@ -64,17 +67,24 @@ function print_stave2(){
   let group = "";
 
   // Resize SVG
-  window.addEventListener('resize', function(){
-      console.log("renderer " + renderer.getContext().width);
-      console.log("div width" + div.offsetWidth);
-      // Size our SVG:
-      renderer.resize(div.offsetWidth, 700); // width space to print notes resize(x,y)
-      // console.log("group = " + print_stave_resize(notesStave,context));
-      let data = print_stave_resize(notesStave,context,renderer);
-      group = data.group;
-      staveMeasurex = data.staveMeasurex;
+  // Observable
+  const resizeObservable = fromEvent(window, "resize").pipe(throttleTime(100));
 
+  resizeObservable.subscribe((e) => {
+    console.log("renderer " + renderer.getContext().width);
+    console.log("div width" + div.offsetWidth);
+    // Size our SVG:
+    renderer.resize(div.offsetWidth, 700); // width space to print notes resize(x,y)
+    // console.log("group = " + print_stave_resize(notesStave,context));
+    let data = print_stave_resize(notesStave,context,renderer);
+    group = data.group;
+    staveMeasurex = data.staveMeasurex;
   })
+
+  // window.addEventListener('resize', function(){
+
+
+  // })
 
   // measure x
 
