@@ -2,7 +2,7 @@ import  'mocha/mocha.css';
 import mocha from "mocha/mocha-es2018";
 import chai from  'chai';
 
-// import {fibonacci} from './main.js';
+import { get_sheets } from './connect';
 
 var expect = chai.expect;
 
@@ -14,7 +14,6 @@ function test(){
         describe('fibonacci function', function() {
             it('should return 0', () => {
                 expect(fibonacci(0)).to.eql([0]);
-                
             });
             it('should return 0, 1', () => {
                 expect(fibonacci(1)).to.eql([0, 1]);
@@ -43,9 +42,30 @@ function test(){
     mocha.run();
 }
 
+
+// test
+function test_sheets(){
+    describe('Array', function() {
+        describe('get sheets function', function() {
+            it('should return an array', () => {
+                expect([get_sheets()]).to.be.an('array');
+            });
+            it('contain test sheet', async () => {
+                let sheets = await get_sheets();
+                console.log(sheets[Object.keys(sheets)[0]]);
+                expect([sheets[Object.keys(sheets)[0]]]).to.deep.include.members([{
+                    "title": "test"
+                }]);
+            });
+            
+        });
+    });
+    
+    mocha.run();
+}
+
 function fibonacci(n){
     var fibo = [0,1];
-  
     if (n==0) {
       fibo=[0];
     }
@@ -62,7 +82,8 @@ export function print_test() {
     <div id="fibonacci"></div>
     <div id="mocha"></div>`;
   
-    test();
+    // test();
+    test_sheets();
     let succesion = fibonacci(100);
     document.querySelector('#fibonacci').innerHTML = succesion;
   }

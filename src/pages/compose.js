@@ -81,13 +81,8 @@ function print_stave2(){
     staveMeasurex = data.staveMeasurex;
   })
 
-  // window.addEventListener('resize', function(){
-
-
-  // })
-
-  // measure x
-
+  
+  // Objecte
   // set stave position
   var staveMeasurex = new Vex.Flow.Stave(10,0,300);
 
