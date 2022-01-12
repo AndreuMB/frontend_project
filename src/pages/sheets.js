@@ -18,7 +18,7 @@ async function print_sheets(){
             sheet_list += 
             `
             <div class="card m-5" style="width: 18rem;">
-                <img src="img/example-sheet.jpg" class="card-img-top" alt="example-sheet">
+                <img src="${el[1].img}" class="card-img-top" alt="example-sheet">
                 <div class="card-body bg-dark">
                     <h5 class="card-title">${el[1].title}</h5>
                     <a href="#" id="play__${el[0]}" class="btn btn-primary play">Play it</a>

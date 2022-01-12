@@ -15,7 +15,7 @@ import { get_users } from './pages/connect';
 
 
 
-document.addEventListener('DOMContentLoaded', async function(){
+document.addEventListener('DOMContentLoaded', function(){
   // get_users();
   // get_sheets();
   // const sheets = await get_sheets();

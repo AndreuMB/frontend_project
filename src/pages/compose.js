@@ -1,4 +1,8 @@
 export { print_stave };
+import { post_img } from './connect';
+import { get_sheets } from './connect';
+import { print_login } from './login';
+
 import {
   fromEvent,
   throttleTime
@@ -24,7 +28,7 @@ function print_stave(){
       btn_save.innerText="Save";
       btn_save.classList.add("btn", "btn-primary");
       container.append(btn_save);
-      sessionStorage.setItem("sheet", "");
+      // sessionStorage.setItem("sheet", "");
       btn_save.addEventListener('click', save_sheet);
 
     })
@@ -167,6 +171,7 @@ function print_stave_resize(stave, context,renderer){
   let div = document.querySelector('#stave_container');
 
   console.log(context.svg.children);
+  // map
   Array.from(context.svg.children).map(x=>x.remove());
 
   // set stave position
@@ -245,4 +250,27 @@ function print_stave_resize(stave, context,renderer){
 
 function save_sheet(){
   console.log("click");
+
+  let svg = document.querySelector("svg");
+
+  var xml = new XMLSerializer().serializeToString(svg);
+
+  // make it base64
+  var svg64 = btoa(xml);
+  var b64Start = 'data:image/svg+xml;base64,';
+
+  // prepend a "header"
+  var image64 = b64Start + svg64;
+
+  // set it as the source of the img element
+  // img.src = image64;
+
+
+  // minuatura
+  // console.log(img.src);
+  // console.log(img);
+
+  // post_img();
+  post_img(image64);
+  
 }
